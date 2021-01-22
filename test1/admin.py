@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Blogpost
+from .models import newcrud
 
-admin.site.register(Blogpost)
+admin.site.register(newcrud)

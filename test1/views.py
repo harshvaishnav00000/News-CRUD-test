@@ -3,11 +3,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as Login
 from django.contrib.auth import logout as Logout
 from django.contrib.auth.models import User
-from .models import Blogpost
-
+from .models import newcrud
 
 def index(request):
-    b = Blogpost.objects.all()
+    b = newcrud.objects.all()
     return render(request, 'index.html', {'item' : b})
 
 
@@ -16,18 +15,43 @@ def add(request):
 
 
 def handleadd(request):
-    b = Blogpost()
+    b = newcrud()
     b.title = request.POST['title']
     b.head0 = request.POST['head']
     b.chead0 = request.POST['content']
+    b.id = request.user.id
     b.save()
 
     return redirect('/')
 
 
 def show(request, id):
-    post = Blogpost.objects.filter(post_id = id)
-    return render(request, 'show.html', {'item' : post})
+    post = newcrud.objects.filter(post_id = id)
+    s = int(request.user.id)
+    t = int(post[0].id)
+    return render(request, 'show.html', {'item' : post, 's': s, 't': t})
+
+
+def update(request, id):
+    post = newcrud.objects.filter(post_id = id)
+    s = int(request.user.id)
+    t = int(post[0].id)
+    return render(request, 'update.html', {'item' : post})
+
+def handleupdate(request, id):
+    b = newcrud.objects.filter(post_id = id)[0]
+    b.title = request.POST['title']
+    b.head0 = request.POST['head']
+    b.chead0 = request.POST['content']
+    # b.id = request.user.id
+    b.save()
+
+    return redirect('/')
+
+def delete(request, id):
+    b = newcrud.objects.filter(post_id = id)[0]
+    b.delete()
+    return redirect('/')
 
 
 
@@ -43,7 +67,6 @@ def handlelogin(request):
     email=request.POST['email']
     password=request.POST['password']
     user=authenticate(username= email, password= password)
-    print(user)
     if user is not None:
         Login(request, user)
         return redirect("/")

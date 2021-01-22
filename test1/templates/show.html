@@ -53,7 +53,13 @@
                 {% endfor %}
             </div>
             <div class="my-3" style="float: right;">
-                <a href="/" class="btn btn-primary">Back</a>
+              <a href="/" class="btn btn-primary">Back</a>
+              {% if t == s %}
+                {% for i in item %}
+                <a href="/update/{{ i.post_id }}" class="btn btn-success">Update</a>
+                <a href="/delete/{{ i.post_id }}" class="btn btn-danger">Delete</a>
+                {% endfor %}
+              {% endif   %}
             </div>
         </div>
 
